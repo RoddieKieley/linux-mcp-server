@@ -38,11 +38,13 @@
 ### Implementation for User Story 1
 
 - [ ] T005 [US1] Implement `generate_sosreport` tool in `src/linux_mcp_server/tools/sosreport.py`
+- [ ] T005A [US1] Add explicit timeout handling and error mapping in `src/linux_mcp_server/tools/sosreport.py`
+- [ ] T005B [US1] Add explicit missing sos/privilege error mapping in `src/linux_mcp_server/tools/sosreport.py`
 - [ ] T006 [US1] Implement `fetch_sosreport` tool in `src/linux_mcp_server/tools/sosreport.py`
 - [ ] T007 [US1] Register sosreport commands in `src/linux_mcp_server/commands.py`
 - [ ] T008 [US1] Wire tool metadata and schemas in `src/linux_mcp_server/tools/__init__.py`
 
-**Checkpoint**: User Story 1 is functional and returns a fetch reference for retrieval.
+**Checkpoint**: User Story 1 is functional, returns a fetch reference, and returns clear timeout/privilege/missing-sos errors.
 
 ---
 
