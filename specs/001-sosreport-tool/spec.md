@@ -5,6 +5,12 @@
 **Status**: Draft  
 **Input**: User description: "Develop a linux-mcp-server MCP tool that generates an sosreport on a remote host using the installed sos utility. It must run non-interactively, support plugin scoping (only_plugins, enable_plugins, disable_plugins), log size limits, and allow redaction control (default redaction on, allow disabling). It should return report metadata (remote path, name, size, timestamp) and provide a way to fetch the archive back to the MCP host. If sos is missing or privileges are insufficient, return a clear, actionable error. Target Fedora 43+ and RHEL 9+, and enforce timeouts with clear error messaging."
 
+## Clarifications
+
+### Session 2026-02-06
+
+- Q: Should report retrieval be handled via a separate fetch tool rather than inline payloads? → A: Yes, return a reference and use a separate fetch tool.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Generate sosreport (Priority: P1)
@@ -67,7 +73,7 @@ An operator chooses whether to use default redaction or disable it.
 - **FR-003**: The tool MUST accept plugin scoping options (`only_plugins`, `enable_plugins`, `disable_plugins`) and a log size limit.
 - **FR-004**: The tool MUST support a redaction toggle with redaction enabled by default.
 - **FR-005**: The tool MUST return report metadata including remote path, report name, size, and timestamp.
-- **FR-006**: The tool MUST provide a way to fetch the report archive to the MCP host.
+- **FR-006**: The tool MUST provide a separate fetch tool that retrieves the report archive using the returned reference.
 - **FR-007**: The tool MUST return a clear, actionable error when `sos` is missing or privileges are insufficient.
 - **FR-008**: The tool MUST enforce a configurable execution timeout and return a clear timeout error.
 
