@@ -16,6 +16,10 @@ from linux_mcp_server.tools.services import get_service_logs
 from linux_mcp_server.tools.services import get_service_status
 from linux_mcp_server.tools.services import list_services
 
+# sosreport
+from linux_mcp_server.tools.sosreport import fetch_sosreport
+from linux_mcp_server.tools.sosreport import generate_sosreport
+
 # storage
 from linux_mcp_server.tools.storage import list_block_devices
 from linux_mcp_server.tools.storage import list_directories
@@ -43,11 +47,13 @@ __all__ = [
     "get_service_logs",
     "get_service_status",
     "get_system_information",
+    "generate_sosreport",
     "list_block_devices",
     "list_directories",
     "list_files",
     "list_processes",
     "list_services",
+    "fetch_sosreport",
     "read_file",
     "read_log_file",
 ]

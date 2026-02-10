@@ -21,6 +21,7 @@ MCP tools organized by category:
 - **[Logs](tools/logs.md)** - Journal, audit, and log file access
 - **[Network](tools/network.md)** - Network interfaces, connections, ports
 - **[Storage](tools/storage.md)** - Block devices, directory and file listing
+- **[Sosreport](tools/sosreport.md)** - Generate and fetch sosreport archives
 
 ### Utilities
 

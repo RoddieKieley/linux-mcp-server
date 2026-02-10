@@ -184,3 +184,25 @@ class NodeEntry(BaseModel):
 class StorageNodes(BaseModel):
     nodes: list[NodeEntry]
     total: int = Field(default_factory=field_length("nodes"))
+
+
+### sosreport models ###
+class SosreportArchive(BaseModel):
+    """Metadata for a generated sosreport archive."""
+
+    id: str
+    remote_path: str
+    filename: str
+    size_bytes: int
+    created_at: datetime
+    host: str
+
+
+class SosreportOptions(BaseModel):
+    """Input options for sosreport generation."""
+
+    only_plugins: list[str] = Field(default_factory=list)
+    enable_plugins: list[str] = Field(default_factory=list)
+    disable_plugins: list[str] = Field(default_factory=list)
+    log_size: str | None = None
+    redaction: bool = True

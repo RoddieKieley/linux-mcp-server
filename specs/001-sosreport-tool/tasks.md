@@ -11,8 +11,8 @@
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Create sosreport tool module scaffold in `src/linux_mcp_server/tools/sosreport.py`
-- [ ] T002 [P] Add tool export in `src/linux_mcp_server/tools/__init__.py`
+- [x] T001 Create sosreport tool module scaffold in `src/linux_mcp_server/tools/sosreport.py`
+- [x] T002 [P] Add tool export in `src/linux_mcp_server/tools/__init__.py`
 
 ---
 
@@ -22,8 +22,8 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T003 [P] Add `SosreportArchive` and `SosreportOptions` models in `src/linux_mcp_server/models.py`
-- [ ] T004 [P] Add sosreport option validation helpers in `src/linux_mcp_server/utils/validation.py`
+- [x] T003 [P] Add `SosreportArchive` and `SosreportOptions` models in `src/linux_mcp_server/models.py`
+- [x] T004 [P] Add sosreport option validation helpers in `src/linux_mcp_server/utils/validation.py`
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -37,12 +37,12 @@
 
 ### Implementation for User Story 1
 
-- [ ] T005 [US1] Implement `generate_sosreport` tool in `src/linux_mcp_server/tools/sosreport.py`
-- [ ] T005A [US1] Add explicit timeout handling and error mapping in `src/linux_mcp_server/tools/sosreport.py`
-- [ ] T005B [US1] Add explicit missing sos/privilege error mapping in `src/linux_mcp_server/tools/sosreport.py`
-- [ ] T006 [US1] Implement `fetch_sosreport` tool in `src/linux_mcp_server/tools/sosreport.py`
-- [ ] T007 [US1] Register sosreport commands in `src/linux_mcp_server/commands.py`
-- [ ] T008 [US1] Wire tool metadata and schemas in `src/linux_mcp_server/tools/__init__.py`
+- [x] T005 [US1] Implement `generate_sosreport` tool in `src/linux_mcp_server/tools/sosreport.py`
+- [x] T005A [US1] Add explicit timeout handling and error mapping in `src/linux_mcp_server/tools/sosreport.py`
+- [x] T005B [US1] Add explicit missing sos/privilege error mapping in `src/linux_mcp_server/tools/sosreport.py`
+- [x] T006 [US1] Implement `fetch_sosreport` tool in `src/linux_mcp_server/tools/sosreport.py`
+- [x] T007 [US1] Register sosreport commands in `src/linux_mcp_server/commands.py`
+- [x] T008 [US1] Wire tool metadata and schemas in `src/linux_mcp_server/tools/__init__.py`
 
 **Checkpoint**: User Story 1 is functional, returns a fetch reference, and returns clear timeout/privilege/missing-sos errors.
 
@@ -56,8 +56,8 @@
 
 ### Implementation for User Story 2
 
-- [ ] T009 [US2] Apply plugin scoping options in `src/linux_mcp_server/tools/sosreport.py`
-- [ ] T010 [US2] Apply log size option mapping in `src/linux_mcp_server/tools/sosreport.py`
+- [x] T009 [US2] Apply plugin scoping options in `src/linux_mcp_server/tools/sosreport.py`
+- [x] T010 [US2] Apply log size option mapping in `src/linux_mcp_server/tools/sosreport.py`
 
 **Checkpoint**: User Story 2 is functional with validated scope options.
 
@@ -71,7 +71,7 @@
 
 ### Implementation for User Story 3
 
-- [ ] T011 [US3] Map redaction toggle to sosreport flags in `src/linux_mcp_server/tools/sosreport.py`
+- [x] T011 [US3] Map redaction toggle to sosreport flags in `src/linux_mcp_server/tools/sosreport.py`
 
 **Checkpoint**: User Story 3 is functional with explicit redaction control.
 
@@ -81,8 +81,8 @@
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T012 [P] Document new tools in `docs/api/tools/sosreport.md`
-- [ ] T013 [P] Add tool links in `docs/api/tools/index.md`
+- [x] T012 [P] Document new tools in `docs/api/tools/sosreport.md`
+- [x] T013 [P] Add tool links in `docs/api/tools/index.md`
 
 ---
 

@@ -90,6 +90,7 @@ nav:
           - Logs: api/tools/logs.md
           - Network: api/tools/network.md
           - Storage: api/tools/storage.md
+          - Sosreport: api/tools/sosreport.md
       - Utilities:
           - Connection: api/connection.md
           - Formatters: api/formatters.md

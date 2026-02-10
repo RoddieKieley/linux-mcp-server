@@ -154,6 +154,23 @@ COMMANDS: Mapping[str, CommandGroup] = MappingProxyType(
                 "default": CommandSpec(args=("tail", "-n", "{lines}", "{log_path}")),
             }
         ),
+        # === sosreport ===
+        "sosreport": CommandGroup(
+            commands={
+                "version": CommandSpec(args=("sos", "--version")),
+                "generate": CommandSpec(
+                    args=("sos", "report", "--batch"),
+                    optional_flags={
+                        "only_plugins": ("--only-plugins", "{only_plugins}"),
+                        "enable_plugins": ("--enable-plugins", "{enable_plugins}"),
+                        "disable_plugins": ("--disable-plugins", "{disable_plugins}"),
+                        "log_size": ("--log-size", "{log_size}"),
+                        "redaction_disabled": ("--no-clean",),
+                    },
+                ),
+                "stat": CommandSpec(args=("stat", "-c", "%s %Y", "{path}")),
+            }
+        ),
         # === Processes ===
         "list_processes": CommandGroup(
             commands={

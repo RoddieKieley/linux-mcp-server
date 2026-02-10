@@ -1,3 +1,4 @@
+import re
 from pathlib import Path
 
 
@@ -79,3 +80,43 @@ def is_successful_output(returncode: int, stdout: str | None) -> bool:
         True if returncode is 0 and stdout contains non-whitespace content.
     """
     return returncode == 0 and not is_empty_output(stdout)
+
+
+PLUGIN_NAME_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
+LOG_SIZE_RE = re.compile(r"^\\d+(?:[KMG])?$", re.IGNORECASE)
+
+
+def validate_plugin_values(values: list[str] | None, field_name: str) -> list[str]:
+    """Validate plugin list values for sosreport options."""
+    if values is None:
+        return []
+
+    if not values:
+        raise ValueError(f"{field_name} cannot be empty when provided")
+
+    for value in values:
+        if not value or not PLUGIN_NAME_RE.match(value):
+            raise ValueError(f"Invalid plugin name '{value}' in {field_name}")
+
+    return values
+
+
+def validate_plugin_scope(
+    only_plugins: list[str],
+    enable_plugins: list[str],
+    disable_plugins: list[str],
+) -> None:
+    """Validate mutually exclusive sosreport plugin scope options."""
+    if only_plugins and (enable_plugins or disable_plugins):
+        raise ValueError("only_plugins cannot be combined with enable_plugins or disable_plugins")
+
+
+def validate_log_size(value: str | None) -> str | None:
+    """Validate sosreport log size setting."""
+    if value is None:
+        return None
+
+    if not LOG_SIZE_RE.match(value):
+        raise ValueError("log_size must be a number optionally suffixed by K, M, or G")
+
+    return value
