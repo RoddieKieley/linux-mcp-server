@@ -25,18 +25,33 @@ from linux_mcp_server.utils.validation import validate_plugin_values
 from linux_mcp_server.utils.validation import validate_path
 
 _REPORT_PATH_RE = re.compile(r"(/[^\\s]+?sosreport[^\\s]+?\\.(?:tar\\.xz|tar\\.gz))")
+_REPORT_NAME_RE = re.compile(r"(sosreport-[^\\s]+?\\.(?:tar\\.xz|tar\\.gz))")
+_REPORT_NAME = "linux-mcp-sos"
 
 
 def _extract_report_path(stdout: str, stderr: str) -> str:
     combined = "\n".join([stdout or "", stderr or ""])
     matches = _REPORT_PATH_RE.findall(combined)
     if not matches:
+        name_matches = _REPORT_NAME_RE.findall(combined)
+        if name_matches:
+            return f"/var/tmp/{name_matches[-1]}"
         raise ToolError("Unable to determine sosreport archive path from command output.")
     return matches[-1]
 
 
 def _local_reports_dir() -> Path:
     return CONFIG.log_dir.parent / "reports"
+
+
+async def _find_latest_named_report(host: Host | None) -> str | None:
+    cmd = get_command("sosreport", "latest_named")
+    returncode, stdout, stderr = await cmd.run(host=host)
+    if stdout:
+        return stdout.strip()
+    if returncode != 0:
+        raise ToolError(f"Unable to locate sosreport archive: {stderr}")
+    return None
 
 
 @mcp.tool(
@@ -106,11 +121,20 @@ async def generate_sosreport(
 
     if returncode != 0:
         combined = "\n".join([stdout or "", stderr or ""]).lower()
+        if "sudo" in combined and "password" in combined:
+            raise ToolError(
+                "sudo requires a password for sosreport. Configure NOPASSWD for the sos command."
+            )
         if "permission denied" in combined or "superuser" in combined or "root" in combined:
             raise ToolError("Insufficient privileges to run sosreport on the target host.")
         raise ToolError(f"sosreport command failed with exit code {returncode}: {stderr or stdout}")
 
-    report_path = _extract_report_path(stdout, stderr)
+    try:
+        report_path = _extract_report_path(stdout, stderr)
+    except ToolError:
+        report_path = await _find_latest_named_report(host)
+        if not report_path:
+            raise ToolError("Unable to determine sosreport archive path from command output.")
     validated_path = validate_path(report_path)
 
     stat_cmd = get_command("sosreport", "stat")
@@ -162,7 +186,7 @@ async def fetch_sosreport(
 ) -> dict[str, t.Any]:
     """Fetch a sosreport archive from the remote host."""
     validated_path = validate_path(fetch_reference)
-    cmd = get_command("read_file")
+    cmd = get_command("read_file", "sudo")
 
     try:
         returncode, stdout, stderr = await cmd.run_bytes(host=host, path=validated_path)
@@ -173,7 +197,12 @@ async def fetch_sosreport(
         raise ToolError(f"Failed to fetch sosreport: {message}") from exc
 
     if returncode != 0:
-        raise ToolError(f"Unable to read sosreport archive: {stderr}")
+        combined = stderr.decode("utf-8", errors="replace") if isinstance(stderr, bytes) else str(stderr)
+        if "sudo" in combined and "password" in combined:
+            raise ToolError(
+                "sudo requires a password to read sosreport. Configure NOPASSWD for /usr/bin/cat."
+            )
+        raise ToolError(f"Unable to read sosreport archive: {combined}")
 
     local_dir = _local_reports_dir()
     local_dir.mkdir(parents=True, exist_ok=True)

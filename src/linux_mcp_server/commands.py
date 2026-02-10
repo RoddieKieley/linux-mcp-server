@@ -157,9 +157,19 @@ COMMANDS: Mapping[str, CommandGroup] = MappingProxyType(
         # === sosreport ===
         "sosreport": CommandGroup(
             commands={
-                "version": CommandSpec(args=("sos", "--version")),
+                "version": CommandSpec(args=("sos", "--help")),
                 "generate": CommandSpec(
-                    args=("sos", "report", "--batch"),
+                    args=(
+                        "sudo",
+                        "-n",
+                        "/usr/bin/sos",
+                        "report",
+                        "--batch",
+                        "--tmp-dir",
+                        "/var/tmp",
+                        "--name",
+                        "linux-mcp-sos",
+                    ),
                     optional_flags={
                         "only_plugins": ("--only-plugins", "{only_plugins}"),
                         "enable_plugins": ("--enable-plugins", "{enable_plugins}"),
@@ -167,6 +177,13 @@ COMMANDS: Mapping[str, CommandGroup] = MappingProxyType(
                         "log_size": ("--log-size", "{log_size}"),
                         "redaction_disabled": ("--no-clean",),
                     },
+                ),
+                "latest_named": CommandSpec(
+                    args=(
+                        "sh",
+                        "-c",
+                        "ls -t /var/tmp/sosreport-*-linux-mcp-sos-*.tar.xz 2>/dev/null | head -n 1",
+                    ),
                 ),
                 "stat": CommandSpec(args=("stat", "-c", "%s %Y", "{path}")),
             }
@@ -248,6 +265,7 @@ COMMANDS: Mapping[str, CommandGroup] = MappingProxyType(
         "read_file": CommandGroup(
             commands={
                 "default": CommandSpec(args=("cat", "{path}")),
+                "sudo": CommandSpec(args=("sudo", "-n", "/usr/bin/cat", "{path}")),
             }
         ),
         # === System Info ===
