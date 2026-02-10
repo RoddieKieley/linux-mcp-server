@@ -597,6 +597,21 @@ Configure these environment variables in the `env` section of your client config
 |----------|--------------|-------------|---------|
 | `LINUX_MCP_ALLOWED_LOG_PATHS` | `read_log_file` tool | Comma-separated allowlist of log files | `/var/log/messages,/var/log/secure` |
 
+### Sosreport sudoers requirements
+
+If you plan to use `generate_sosreport` or `fetch_sosreport`, configure NOPASSWD
+sudo rules on the target host. Add these lines to `/etc/sudoers.d/mcp-sos`:
+
+```bash
+sudo tee /etc/sudoers.d/mcp-sos >/dev/null <<'EOF'
+mcp ALL=(root) NOPASSWD: /usr/bin/sos report --batch --tmp-dir /var/tmp --name linux-mcp-sos
+mcp ALL=(root) NOPASSWD: /usr/bin/cat /var/tmp/sosreport-*-linux-mcp-sos-*.tar.xz
+mcp ALL=(root) NOPASSWD: /usr/bin/cat /var/tmp/sosreport-*-linux-mcp-sos-*.tar.xz.sha256
+EOF
+```
+
+Ensure the sudoers drop-in is owned by `root:root` and has permissions `0440`.
+
 ### Logging Configuration
 
 | Variable | Default | Description |

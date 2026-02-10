@@ -169,6 +169,40 @@ pytest tests/ -k "system_info" -v
    sudo chown -R $USER:$USER /home/$USER/.local/share/linux-mcp-server/logs
    ```
 
+### "sudo requires a password" when running sosreport tools
+
+**Cause:** The sosreport tools run with `sudo -n` and require NOPASSWD entries
+for the `mcp` user on the remote host.
+
+**Solutions:**
+
+1. Add a sudoers drop-in on the remote host:
+   ```bash
+   sudo tee /etc/sudoers.d/mcp-sos >/dev/null <<'EOF'
+   mcp ALL=(root) NOPASSWD: /usr/bin/sos report --batch --tmp-dir /var/tmp --name linux-mcp-sos
+   mcp ALL=(root) NOPASSWD: /usr/bin/cat /var/tmp/sosreport-*-linux-mcp-sos-*.tar.xz
+   mcp ALL=(root) NOPASSWD: /usr/bin/cat /var/tmp/sosreport-*-linux-mcp-sos-*.tar.xz.sha256
+   EOF
+   ```
+2. Ensure permissions and ownership:
+   ```bash
+   sudo chown root:root /etc/sudoers.d/mcp-sos
+   sudo chmod 0440 /etc/sudoers.d/mcp-sos
+   ```
+
+### "sosreport command timed out before completion"
+
+**Cause:** The sosreport archive can take longer than the default command timeout,
+especially on busy hosts or when the report is large.
+
+**Solutions:**
+
+1. Increase the timeout for the MCP server:
+   ```bash
+   export LINUX_MCP_COMMAND_TIMEOUT=600
+   ```
+2. Restart the MCP server after updating the environment.
+
 ### Claude Desktop doesn't show the MCP server
 
 Common causes:

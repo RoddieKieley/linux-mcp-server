@@ -176,6 +176,30 @@ Returns ports that are listening on the system.
 
 ### Storage & Disk Analysis
 
+### Sosreport Diagnostics
+
+#### `generate_sosreport`
+Generates a sosreport archive on the remote host and returns metadata plus a fetch reference.
+
+**Parameters:**
+- `host` (string, required): Remote host to connect to via SSH
+- `only_plugins` (string list, optional): Restrict to specific plugins
+- `enable_plugins` (string list, optional): Enable specific plugins
+- `disable_plugins` (string list, optional): Disable specific plugins
+- `log_size` (string, optional): Limit collected log size (e.g., "50M")
+- `redaction` (boolean, optional): Keep redaction enabled (default true)
+
+**Example use case:** "Generate a default sosreport from the remote host."
+
+#### `fetch_sosreport`
+Fetches the sosreport archive from the remote host using the reference returned by `generate_sosreport`.
+
+**Parameters:**
+- `fetch_reference` (string, required): Remote archive path returned by `generate_sosreport`
+- `host` (string, required): Remote host to connect to via SSH
+
+**Example use case:** "Download the sosreport archive to the MCP host."
+
 #### `list_block_devices`
 Lists block devices, partitions, and disk I/O statistics.
 
@@ -258,6 +282,19 @@ Some tools may require elevated privileges to show complete information:
 - `get_audit_logs` - Requires read access to `/var/log/audit/audit.log`
 - `get_network_connections` - May require root to see all connections
 - `get_hardware_information` - Some hardware details (dmidecode) require root
+- `generate_sosreport` / `fetch_sosreport` - Requires sudo NOPASSWD for sosreport execution and archive reads
+
+#### Sosreport sudoers setup
+The sosreport tools run with `sudo -n` and require NOPASSWD entries on the
+remote host. Add the following lines to `/etc/sudoers.d/mcp-sos`:
+
+```
+mcp ALL=(root) NOPASSWD: /usr/bin/sos report --batch --tmp-dir /var/tmp --name linux-mcp-sos
+mcp ALL=(root) NOPASSWD: /usr/bin/cat /var/tmp/sosreport-*-linux-mcp-sos-*.tar.xz
+mcp ALL=(root) NOPASSWD: /usr/bin/cat /var/tmp/sosreport-*-linux-mcp-sos-*.tar.xz.sha256
+```
+
+Ensure the sudoers drop-in is owned by `root:root` and has permissions `0440`.
 
 ### Recommended Approach
 Run the MCP server with the minimum required privileges. Consider:

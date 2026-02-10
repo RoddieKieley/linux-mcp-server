@@ -173,6 +173,21 @@ Once the SSH keys are configured, configure your [LLM client](clients.md) to run
 
     If prompted for a password, key-based authentication is not configured correctly.
 
+### Sosreport sudoers requirements
+
+If you plan to use `generate_sosreport` or `fetch_sosreport`, configure NOPASSWD
+sudo rules on the target host. Add these lines to `/etc/sudoers.d/mcp-sos`:
+
+```bash
+sudo tee /etc/sudoers.d/mcp-sos >/dev/null <<'EOF'
+mcp ALL=(root) NOPASSWD: /usr/bin/sos report --batch --tmp-dir /var/tmp --name linux-mcp-sos
+mcp ALL=(root) NOPASSWD: /usr/bin/cat /var/tmp/sosreport-*-linux-mcp-sos-*.tar.xz
+mcp ALL=(root) NOPASSWD: /usr/bin/cat /var/tmp/sosreport-*-linux-mcp-sos-*.tar.xz.sha256
+EOF
+```
+
+Ensure the sudoers drop-in is owned by `root:root` and has permissions `0440`.
+
 ### Specifying Remote Hosts
 
 When using MCP tools, the `host` parameter may be a fully qualified domain name (FQDN), an alias from `~/.ssh/config`, or an IP address.
