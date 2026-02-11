@@ -1,0 +1,200 @@
+openapi: 3.1.0
+info:
+  title: Sosreport Tool Behavior Contract
+  version: 1.0.0
+  description: |
+    Behavioral contract used for test-planning traceability of sosreport generation
+    and retrieval flows. This contract models expected request/response shapes and
+    error outcomes that automated tests must validate.
+servers:
+  - url: mcp://linux-mcp-server
+paths:
+  /tools/generate_sosreport:
+    post:
+      summary: Generate a sosreport archive reference and metadata
+      operationId: generateSosreport
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GenerateRequest"
+      responses:
+        "200":
+          description: Generation succeeds
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenerateSuccess"
+        "400":
+          description: Validation failure
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ToolError"
+        "403":
+          description: Privilege or passwordless sudo requirement failure
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ToolError"
+        "408":
+          description: Generation timeout
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ToolError"
+  /tools/fetch_sosreport:
+    post:
+      summary: Fetch a generated sosreport archive and return integrity metadata
+      operationId: fetchSosreport
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FetchRequest"
+      responses:
+        "200":
+          description: Retrieval succeeds
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FetchSuccess"
+        "400":
+          description: Invalid archive reference input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ToolError"
+        "403":
+          description: Permission denied or sudo password requirement
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ToolError"
+        "408":
+          description: Retrieval timeout
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ToolError"
+components:
+  schemas:
+    GenerateRequest:
+      type: object
+      properties:
+        host:
+          type: string
+        only_plugins:
+          type: array
+          items:
+            type: string
+        enable_plugins:
+          type: array
+          items:
+            type: string
+        disable_plugins:
+          type: array
+          items:
+            type: string
+        log_size:
+          type: string
+        redaction:
+          type: boolean
+      additionalProperties: false
+    ArchiveMetadata:
+      type: object
+      required:
+        - id
+        - remote_path
+        - filename
+        - size_bytes
+        - created_at
+        - host
+      properties:
+        id:
+          type: string
+        remote_path:
+          type: string
+        filename:
+          type: string
+        size_bytes:
+          type: integer
+          minimum: 0
+        created_at:
+          type: string
+          format: date-time
+        host:
+          type: string
+    GenerateOptions:
+      type: object
+      required:
+        - only_plugins
+        - enable_plugins
+        - disable_plugins
+        - redaction
+      properties:
+        only_plugins:
+          type: array
+          items:
+            type: string
+        enable_plugins:
+          type: array
+          items:
+            type: string
+        disable_plugins:
+          type: array
+          items:
+            type: string
+        log_size:
+          type:
+            - string
+            - "null"
+        redaction:
+          type: boolean
+    GenerateSuccess:
+      type: object
+      required:
+        - archive
+        - fetch_reference
+        - options
+      properties:
+        archive:
+          $ref: "#/components/schemas/ArchiveMetadata"
+        fetch_reference:
+          type: string
+        options:
+          $ref: "#/components/schemas/GenerateOptions"
+    FetchRequest:
+      type: object
+      required:
+        - fetch_reference
+      properties:
+        fetch_reference:
+          type: string
+        host:
+          type: string
+      additionalProperties: false
+    FetchSuccess:
+      type: object
+      required:
+        - archive_path
+        - size_bytes
+        - sha256
+      properties:
+        archive_path:
+          type: string
+        size_bytes:
+          type: integer
+          minimum: 0
+        sha256:
+          type: string
+          pattern: "^[a-f0-9]{64}$"
+    ToolError:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
