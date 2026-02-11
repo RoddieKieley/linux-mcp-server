@@ -1,4 +1,5 @@
 import re
+
 from pathlib import Path
 
 
@@ -83,7 +84,7 @@ def is_successful_output(returncode: int, stdout: str | None) -> bool:
 
 
 PLUGIN_NAME_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
-LOG_SIZE_RE = re.compile(r"^\\d+(?:[KMG])?$", re.IGNORECASE)
+LOG_SIZE_RE = re.compile(r"^\d+(?:[KMG])?$", re.IGNORECASE)
 
 
 def validate_plugin_values(values: list[str] | None, field_name: str) -> list[str]:

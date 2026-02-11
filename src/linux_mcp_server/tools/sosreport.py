@@ -20,12 +20,13 @@ from linux_mcp_server.server import mcp
 from linux_mcp_server.utils.decorators import disallow_local_execution_in_containers
 from linux_mcp_server.utils.types import Host
 from linux_mcp_server.utils.validation import validate_log_size
+from linux_mcp_server.utils.validation import validate_path
 from linux_mcp_server.utils.validation import validate_plugin_scope
 from linux_mcp_server.utils.validation import validate_plugin_values
-from linux_mcp_server.utils.validation import validate_path
 
-_REPORT_PATH_RE = re.compile(r"(/[^\\s]+?sosreport[^\\s]+?\\.(?:tar\\.xz|tar\\.gz))")
-_REPORT_NAME_RE = re.compile(r"(sosreport-[^\\s]+?\\.(?:tar\\.xz|tar\\.gz))")
+
+_REPORT_PATH_RE = re.compile(r"(/[^\s]+?sosreport[^\s]+?\.(?:tar\.xz|tar\.gz))")
+_REPORT_NAME_RE = re.compile(r"(sosreport-[^\s]+?\.(?:tar\.xz|tar\.gz))")
 _REPORT_NAME = "linux-mcp-sos"
 
 
@@ -99,8 +100,7 @@ async def generate_sosreport(
     version_code, _, version_err = await version_cmd.run(host=host)
     if version_code != 0:
         raise ToolError(
-            "sos is not installed on the target host. Install it with: dnf install sos"
-            f" (error: {version_err.strip()})"
+            f"sos is not installed on the target host. Install it with: dnf install sos (error: {version_err.strip()})"
         )
 
     cmd = get_command("sosreport", "generate")
@@ -122,9 +122,7 @@ async def generate_sosreport(
     if returncode != 0:
         combined = "\n".join([stdout or "", stderr or ""]).lower()
         if "sudo" in combined and "password" in combined:
-            raise ToolError(
-                "sudo requires a password for sosreport. Configure NOPASSWD for the sos command."
-            )
+            raise ToolError("sudo requires a password for sosreport. Configure NOPASSWD for the sos command.")
         if "permission denied" in combined or "superuser" in combined or "root" in combined:
             raise ToolError("Insufficient privileges to run sosreport on the target host.")
         raise ToolError(f"sosreport command failed with exit code {returncode}: {stderr or stdout}")
@@ -199,9 +197,7 @@ async def fetch_sosreport(
     if returncode != 0:
         combined = stderr.decode("utf-8", errors="replace") if isinstance(stderr, bytes) else str(stderr)
         if "sudo" in combined and "password" in combined:
-            raise ToolError(
-                "sudo requires a password to read sosreport. Configure NOPASSWD for /usr/bin/cat."
-            )
+            raise ToolError("sudo requires a password to read sosreport. Configure NOPASSWD for /usr/bin/cat.")
         raise ToolError(f"Unable to read sosreport archive: {combined}")
 
     local_dir = _local_reports_dir()

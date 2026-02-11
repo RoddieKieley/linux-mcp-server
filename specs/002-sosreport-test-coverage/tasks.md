@@ -16,8 +16,8 @@
 
 **Purpose**: Confirm task scope and baseline test harness behavior before story work.
 
-- [ ] T001 Confirm scope constraints and update `specs/002-sosreport-test-coverage/tasks.md` notes to limit code changes to `tests/tools/test_sosreport.py`, `src/linux_mcp_server/tools/sosreport.py`, `src/linux_mcp_server/utils/validation.py`, and optional `tests/utils/test_validation.py` (FR-010)
-- [ ] T002 Run baseline command `uv run pytest tests/tools/test_sosreport.py` and document current failures in `specs/002-sosreport-test-coverage/tasks.md` implementation notes (FR-011, SC-005)
+- [X] T001 Confirm scope constraints and update `specs/002-sosreport-test-coverage/tasks.md` notes to limit code changes to `tests/tools/test_sosreport.py`, `src/linux_mcp_server/tools/sosreport.py`, `src/linux_mcp_server/utils/validation.py`, and optional `tests/utils/test_validation.py` (FR-010)
+- [X] T002 Run baseline command `uv run pytest tests/tools/test_sosreport.py` and document current failures in `specs/002-sosreport-test-coverage/tasks.md` implementation notes (FR-011, SC-005)
 
 **Phase 1 Verification**
 
@@ -31,9 +31,9 @@
 
 **⚠️ CRITICAL**: Complete this phase before any user story implementation.
 
-- [ ] T003 Add deterministic command-mocking helpers/fixtures in `tests/tools/test_sosreport.py` for ordered `execute_with_fallback` outcomes and host-aware assertions (FR-010, FR-011)
-- [ ] T004 [P] Add helper assertions in `tests/tools/test_sosreport.py` for structured content extraction and error text matching across MCP tool calls (FR-001, FR-006, SC-001)
-- [ ] T005 [P] Add deterministic payload/checksum helper in `tests/tools/test_sosreport.py` for binary retrieval integrity checks (FR-007, SC-003)
+- [X] T003 Add deterministic command-mocking helpers/fixtures in `tests/tools/test_sosreport.py` for ordered `execute_with_fallback` outcomes and host-aware assertions (FR-010, FR-011)
+- [X] T004 [P] Add helper assertions in `tests/tools/test_sosreport.py` for structured content extraction and error text matching across MCP tool calls (FR-001, FR-006, SC-001)
+- [X] T005 [P] Add deterministic payload/checksum helper in `tests/tools/test_sosreport.py` for binary retrieval integrity checks (FR-007, SC-003)
 
 **Checkpoint**: Shared test harness is ready; story phases can proceed.
 
@@ -51,15 +51,15 @@
 
 ### Tests for User Story 1
 
-- [ ] T006 [US1] Add generation success test in `tests/tools/test_sosreport.py` validating archive metadata, fetch reference, and generated command arguments (FR-001, FR-011, SC-001, SC-005)
-- [ ] T007 [US1] Add generation sudo-password-required error test in `tests/tools/test_sosreport.py` validating actionable NOPASSWD messaging (FR-002, SC-002)
-- [ ] T008 [US1] Add generation permission-denied and timeout mapping tests in `tests/tools/test_sosreport.py` validating clear error outcomes (FR-003, FR-006, SC-002)
-- [ ] T009 [US1] Add output path resolution tests in `tests/tools/test_sosreport.py` for absolute-path output, `/var/tmp` filename pattern output, and latest-named fallback behavior (FR-004, SC-005)
+- [X] T006 [US1] Add generation success test in `tests/tools/test_sosreport.py` validating archive metadata, fetch reference, and generated command arguments (FR-001, FR-011, SC-001, SC-005)
+- [X] T007 [US1] Add generation sudo-password-required error test in `tests/tools/test_sosreport.py` validating actionable NOPASSWD messaging (FR-002, SC-002)
+- [X] T008 [US1] Add generation permission-denied and timeout mapping tests in `tests/tools/test_sosreport.py` validating clear error outcomes (FR-003, FR-006, SC-002)
+- [X] T009 [US1] Add output path resolution tests in `tests/tools/test_sosreport.py` for absolute-path output, `/var/tmp` filename pattern output, and latest-named fallback behavior (FR-004, SC-005)
 
 ### Implementation for User Story 1 (minimal parity fixes only)
 
-- [ ] T010 [US1] Apply minimal parsing/parity fixes in `src/linux_mcp_server/tools/sosreport.py` only if US1 tests fail due to path extraction or error-mapping mismatches (FR-004, FR-011, SC-005)
-- [ ] T011 [US1] Re-run generation-focused suite and update notes in `specs/002-sosreport-test-coverage/tasks.md` with pass/fail status (FR-001, FR-002, FR-003, FR-004, SC-001, SC-002)
+- [X] T010 [US1] Apply minimal parsing/parity fixes in `src/linux_mcp_server/tools/sosreport.py` only if US1 tests fail due to path extraction or error-mapping mismatches (FR-004, FR-011, SC-005)
+- [X] T011 [US1] Re-run generation-focused suite and update notes in `specs/002-sosreport-test-coverage/tasks.md` with pass/fail status (FR-001, FR-002, FR-003, FR-004, SC-001, SC-002)
 
 **Checkpoint**: User Story 1 is independently functional and testable.
 
@@ -77,15 +77,15 @@
 
 ### Tests for User Story 2
 
-- [ ] T012 [US2] Add retrieval success test in `tests/tools/test_sosreport.py` validating privileged read path usage, local archive path, and size reporting (FR-005, SC-001)
-- [ ] T013 [US2] Add retrieval access-denied and sudo-password-required tests in `tests/tools/test_sosreport.py` validating clear actionable errors (FR-006, SC-002)
-- [ ] T014 [US2] Add retrieval timeout mapping test in `tests/tools/test_sosreport.py` for deterministic timeout behavior (FR-006, SC-002)
-- [ ] T015 [US2] Add binary integrity test in `tests/tools/test_sosreport.py` validating checksum and byte-for-byte payload preservation (FR-007, SC-003)
+- [X] T012 [US2] Add retrieval success test in `tests/tools/test_sosreport.py` validating privileged read path usage, local archive path, and size reporting (FR-005, SC-001)
+- [X] T013 [US2] Add retrieval access-denied and sudo-password-required tests in `tests/tools/test_sosreport.py` validating clear actionable errors (FR-006, SC-002)
+- [X] T014 [US2] Add retrieval timeout mapping test in `tests/tools/test_sosreport.py` for deterministic timeout behavior (FR-006, SC-002)
+- [X] T015 [US2] Add binary integrity test in `tests/tools/test_sosreport.py` validating checksum and byte-for-byte payload preservation (FR-007, SC-003)
 
 ### Implementation for User Story 2 (minimal parity fixes only)
 
-- [ ] T016 [US2] Apply minimal parity fixes in `src/linux_mcp_server/tools/sosreport.py` only if retrieval tests expose behavioral mismatches (FR-005, FR-006, FR-007, FR-011, SC-005)
-- [ ] T017 [US2] Re-run retrieval-focused suite and record status in `specs/002-sosreport-test-coverage/tasks.md` notes (FR-005, FR-006, FR-007, SC-001, SC-002, SC-003)
+- [X] T016 [US2] Apply minimal parity fixes in `src/linux_mcp_server/tools/sosreport.py` only if retrieval tests expose behavioral mismatches (FR-005, FR-006, FR-007, FR-011, SC-005)
+- [X] T017 [US2] Re-run retrieval-focused suite and record status in `specs/002-sosreport-test-coverage/tasks.md` notes (FR-005, FR-006, FR-007, SC-001, SC-002, SC-003)
 
 **Checkpoint**: User Story 2 is independently functional and testable.
 
@@ -103,15 +103,15 @@
 
 ### Tests for User Story 3
 
-- [ ] T018 [US3] Add option-handling tests in `tests/tools/test_sosreport.py` for `only_plugins`, `enable_plugins`, `disable_plugins`, `log_size`, and `redaction` behavior preservation (FR-008, SC-004)
-- [ ] T019 [US3] Add invalid generation-option tests in `tests/tools/test_sosreport.py` for empty/invalid/conflicting values with deterministic errors (FR-009, SC-004)
-- [ ] T020 [US3] Add invalid retrieval-reference path tests in `tests/tools/test_sosreport.py` validating deterministic input-validation errors (FR-009, SC-004)
+- [X] T018 [US3] Add option-handling tests in `tests/tools/test_sosreport.py` for `only_plugins`, `enable_plugins`, `disable_plugins`, `log_size`, and `redaction` behavior preservation (FR-008, SC-004)
+- [X] T019 [US3] Add invalid generation-option tests in `tests/tools/test_sosreport.py` for empty/invalid/conflicting values with deterministic errors (FR-009, SC-004)
+- [X] T020 [US3] Add invalid retrieval-reference path tests in `tests/tools/test_sosreport.py` validating deterministic input-validation errors (FR-009, SC-004)
 
 ### Implementation for User Story 3 (minimal parity fixes only)
 
-- [ ] T021 [US3] Apply minimal validation parity fixes in `src/linux_mcp_server/utils/validation.py` only if US3 tests reveal contract mismatches (FR-008, FR-009, FR-011, SC-004, SC-005)
-- [ ] T022 [US3] [P] Add or update regression tests in `tests/utils/test_validation.py` only for behaviors changed by T021 (FR-009, SC-004)
-- [ ] T023 [US3] Re-run option/validation-focused suites and record outcome in `specs/002-sosreport-test-coverage/tasks.md` notes (FR-008, FR-009, SC-004)
+- [X] T021 [US3] Apply minimal validation parity fixes in `src/linux_mcp_server/utils/validation.py` only if US3 tests reveal contract mismatches (FR-008, FR-009, FR-011, SC-004, SC-005)
+- [X] T022 [US3] [P] Add or update regression tests in `tests/utils/test_validation.py` only for behaviors changed by T021 (FR-009, SC-004)
+- [X] T023 [US3] Re-run option/validation-focused suites and record outcome in `specs/002-sosreport-test-coverage/tasks.md` notes (FR-008, FR-009, SC-004)
 
 **Checkpoint**: User Story 3 is independently functional and testable.
 
@@ -126,9 +126,9 @@
 
 **Purpose**: Final integration verification and quality gates across all stories.
 
-- [ ] T024 [P] Ensure FR/SC traceability comments remain clear and complete in `tests/tools/test_sosreport.py` and `specs/002-sosreport-test-coverage/tasks.md` (FR-011, SC-005)
-- [ ] T025 Execute full targeted regression run `uv run pytest tests/tools/test_sosreport.py tests/utils/test_validation.py` and capture results in `specs/002-sosreport-test-coverage/tasks.md` notes (SC-001, SC-002, SC-003, SC-004, SC-005)
-- [ ] T026 Execute repository quality gate `make verify` and capture final pass confirmation in `specs/002-sosreport-test-coverage/tasks.md` notes (FR-010, SC-004)
+- [X] T024 [P] Ensure FR/SC traceability comments remain clear and complete in `tests/tools/test_sosreport.py` and `specs/002-sosreport-test-coverage/tasks.md` (FR-011, SC-005)
+- [X] T025 Execute full targeted regression run `uv run pytest tests/tools/test_sosreport.py tests/utils/test_validation.py` and capture results in `specs/002-sosreport-test-coverage/tasks.md` notes (SC-001, SC-002, SC-003, SC-004, SC-005)
+- [X] T026 Execute repository quality gate `make verify` and capture final pass confirmation in `specs/002-sosreport-test-coverage/tasks.md` notes (FR-010, SC-004)
 
 ---
 
@@ -207,3 +207,10 @@ Task: "T014 [US2] Add retrieval timeout test in tests/tools/test_sosreport.py"
 - All story tasks are explicitly scoped to approved files.
 - Every task includes FR/SC mapping for traceability.
 - Use deterministic mocks only; do not introduce VM/SSH runtime dependencies.
+- Implementation baseline (T002): `uv run pytest tests/tools/test_sosreport.py` failed with `file or directory not found: tests/tools/test_sosreport.py` (exit code 4), as expected before test creation.
+- Phase 2 verification: `uv run pytest tests/tools/test_sosreport.py` passed (18 passed) after minimal parity fixes in `src/linux_mcp_server/tools/sosreport.py` and `src/linux_mcp_server/utils/validation.py`.
+- Phase 3 verification: `uv run pytest tests/tools/test_sosreport.py -k "generate_sosreport"` passed (10 passed).
+- Phase 4 verification: `uv run pytest tests/tools/test_sosreport.py -k "fetch_sosreport"` passed (8 passed).
+- Phase 5 verification: `uv run pytest tests/tools/test_sosreport.py -k "invalid or options"` passed (9 passed); `uv run pytest tests/utils/test_validation.py` passed (50 passed).
+- Phase 6 verification: `uv run pytest tests/tools/test_sosreport.py tests/utils/test_validation.py` passed (68 passed); `make verify` passed (441 passed, 1 warning).
+- T022 note: no additional updates were needed in `tests/utils/test_validation.py` beyond existing coverage; current tests validated the behavior changes introduced in T021.
